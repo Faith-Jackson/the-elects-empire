@@ -1,0 +1,22 @@
+{
+  "name": "The Elects Empire Archives",
+  "short_name": "Elects Empire",
+  "description": "An immersive digital sanctuary for scripture, study, and fellowship.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1541447237128-f4bcb61782af?auto=format&fit=crop&q=80&w=192&h=192",
+      "type": "image/png",
+      "sizes": "192x192"
+      },
+    {
+      "src": "https://images.unsplash.com/photo-1541447237128-f4bcb61782af?auto=format&fit=crop&q=80&w=512&h=512",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
