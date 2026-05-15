@@ -1,6 +1,6 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { BookOpen, AlertCircle, FileText, Book, Video, Users, BookMarked, UserPlus, MessageSquare, HandHelping, ListChecks, BookOpenText, Mic, BrainCircuit, Shield, Music, ChevronRight, Sun, Feather, Zap } from 'lucide-react';
+import { BookOpen, AlertCircle, FileText, Book, Video, Users, BookMarked, UserPlus, MessageSquare, HandHelping, ListChecks, BookOpenText, Mic, BrainCircuit, Shield, Music, ChevronRight, Sun, Feather, Zap, LogIn } from 'lucide-react';
 import { motion } from "motion/react";
 import VerseOfTheDay from '../components/VerseOfTheDay';
 import CommunityHeartbeat from '../components/CommunityHeartbeat';
@@ -87,7 +87,7 @@ export default function Home() {
                className="w-20 h-20 bg-[var(--color-primary)]/10 rounded-3xl flex items-center justify-center text-[var(--color-primary)] shadow-neon-glow relative group/icon"
              >
                 <div className="absolute inset-0 bg-[var(--color-primary)]/20 blur-xl opacity-0 group-hover/icon:opacity-100 transition-opacity"></div>
-                <BookOpen size={36} className="relative z-10" />
+                {user ? <BookOpen size={36} className="relative z-10" /> : <LogIn size={36} className="relative z-10" />}
              </motion.div>
           </motion.div>
 
@@ -214,7 +214,7 @@ export default function Home() {
         >
           <div className="flex items-center gap-6">
             <div className="w-16 h-16 bg-[var(--color-primary)] rounded-2xl flex items-center justify-center text-[var(--color-background)] shadow-neon">
-                <Users size={32} />
+                <LogIn size={32} />
             </div>
             <div className="text-center md:text-left">
               <h3 className="font-serif font-bold text-2xl text-[var(--color-text)]">Join The Empire</h3>

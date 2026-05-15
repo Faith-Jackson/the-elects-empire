@@ -205,7 +205,7 @@ export default function Layout() {
                </div>
              ) : (
                 <Link to="/profile" className="w-9 h-9 rounded-full bg-[var(--color-text)]/5 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all shadow-inner border border-[var(--color-border-subtle)] group">
-                  <User size={18} className="group-hover:scale-110 transition-transform" />
+                  <LogIn size={18} className="group-hover:scale-110 transition-transform" />
                 </Link>
              )}
            </div>
@@ -234,7 +234,7 @@ export default function Layout() {
                 <div className="flex-1 overflow-y-auto px-6 pb-24">
                   <div className="flex items-center gap-4 mb-8">
                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-clay)] flex items-center justify-center text-white font-bold text-lg uppercase shadow-neon-glow">
-                       {user ? initials : <User size={24} />}
+                       {user ? initials : <LogIn size={24} />}
                      </div>
                      <div>
                        <h3 className="font-serif font-bold text-xl text-[var(--color-text)]">{user ? (profile?.displayName || 'Royal Priest') : <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="text-[var(--color-primary)] hover:underline">Sign In</Link>}</h3>

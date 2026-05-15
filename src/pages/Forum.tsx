@@ -35,7 +35,8 @@ export default function Forum() {
 
   if (loading) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin text-[var(--color-primary)]" /></div>;
 
-    <div className="p-8 max-w-4xl mx-auto space-y-12 mb-20">
+  return (
+    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-12 mb-32">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-4">
            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
@@ -49,18 +50,51 @@ export default function Forum() {
         </div>
       </div>
       
-      <OnlineUsers />
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-8">
+          <OnlineUsers />
 
-      <div className="grid gap-6">
-        {categories.map(category => (
-          <div key={category.id} className="glass-panel p-6 border border-[var(--color-border-subtle)] rounded-xl">
-            <h2 className="text-xl font-bold text-[var(--color-text)] flex items-center gap-2 mb-2">
-              <MessageSquare size={20} className="text-[var(--color-primary)]" /> {category.name}
-            </h2>
-            <p className="text-[var(--color-text-muted)] mb-4">{category.description}</p>
-            <Link to={`/forum/categories/${category.id}`} className="text-[var(--color-primary)] font-medium">View Threads →</Link>
+          <div className="grid gap-6">
+            {categories.map(category => (
+              <div key={category.id} className="glass-panel p-8 border border-white/10 rounded-[2rem] hover:border-[var(--color-primary)]/50 transition-all flex flex-col sm:flex-row items-center justify-between group bg-gradient-to-r from-[var(--color-primary)]/5 to-transparent shadow-xl">
+                <div className="flex items-center gap-6">
+                   <div className="w-16 h-16 bg-white/5 rounded-3xl flex items-center justify-center text-[var(--color-primary)] group-hover:bg-[var(--color-primary)] group-hover:text-black transition-all duration-500 shadow-inner">
+                      <MessageSquare size={32} />
+                   </div>
+                   <div className="space-y-1">
+                      <h2 className="text-2xl font-serif font-bold text-white tracking-tight">{category.name}</h2>
+                      <p className="text-sm text-[var(--color-text-muted)] italic leading-relaxed">{category.description}</p>
+                   </div>
+                </div>
+                <Link to={`/forum/categories/${category.id}`} className="mt-4 sm:mt-0 px-6 py-2 bg-[var(--color-text)]/5 hover:bg-[var(--color-primary)] hover:text-black rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">View Threads →</Link>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        <div className="space-y-8">
+           <div className="glass-panel p-10 rounded-[2.5rem] border border-white/10 space-y-6">
+              <div className="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500 mb-2">
+                <MessageSquare size={24} />
+              </div>
+              <h3 className="font-serif font-bold text-2xl text-white">Forum Rules</h3>
+              <p className="text-sm text-white/50 leading-relaxed italic">
+                The Imperial Discourse is a sacred space for the expansion of knowledge. Let every interaction be rooted in love, seasoning your speech with salt.
+              </p>
+              <div className="space-y-4 pt-4">
+                 {[
+                   { text: "Christ-Centric Conduct" },
+                   { text: "Apostolic Order" },
+                   { text: "Spiritual Depth" }
+                 ].map((item, i) => (
+                   <div key={i} className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-white/40">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)]" />
+                      {item.text}
+                   </div>
+                 ))}
+              </div>
+           </div>
+        </div>
       </div>
     </div>
   );
