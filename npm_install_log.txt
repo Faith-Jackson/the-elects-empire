@@ -1,0 +1,1 @@
+npm error A complete log of this run can be found in: /Users/The13Disciple/.npm/_logs/2026-05-14T23_20_36_854Z-debug-0.log
