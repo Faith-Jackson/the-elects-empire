@@ -66,24 +66,26 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       }
 
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background text-text">
-          <div className="glass-card p-8 rounded-2xl max-w-lg w-full text-center space-y-4 shadow-neon">
+        <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[var(--color-background)] text-[var(--color-text)]">
+          <div className="glass-card p-8 rounded-2xl max-w-lg w-full text-center space-y-4 border border-[var(--color-border-subtle)]">
             <h2 className="text-2xl font-bold text-red-500">Something went wrong</h2>
-            <p className="text-text-muted">{message}</p>
-            <button
-              onClick={() => {
-                this.setState({ hasError: false, error: null });
-              }}
-              className="mt-4 px-6 py-2 bg-primary text-background font-semibold rounded-lg hover:opacity-90 transition-opacity active-press"
-            >
-              Dismiss
-            </button>
-            <button
-              onClick={() => window.location.reload()}
-              className="mt-4 ml-4 px-6 py-2 bg-white/10 text-text font-semibold rounded-lg hover:opacity-90 transition-opacity active-press"
-            >
-              Reload Page
-            </button>
+            <p className="text-[var(--color-text-muted)]">{message}</p>
+            <div className="flex items-center justify-center gap-4 pt-2">
+              <button
+                onClick={() => {
+                  this.setState({ hasError: false, error: null });
+                }}
+                className="px-6 py-2 bg-[var(--color-primary)] text-[var(--color-background)] font-semibold rounded-lg hover:opacity-90 transition-opacity active:scale-95"
+              >
+                Dismiss
+              </button>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-2 bg-[var(--color-text)]/10 text-[var(--color-text)] font-semibold rounded-lg hover:opacity-90 transition-opacity active:scale-95"
+              >
+                Reload Page
+              </button>
+            </div>
           </div>
         </div>
       );

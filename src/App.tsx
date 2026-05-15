@@ -6,6 +6,7 @@ import Layout from './components/layout/Layout';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { VersePopupProvider } from './components/BibleVersePopup';
 import SEO from './components/SEO';
+import NotFound from './components/NotFound';
 
 // Lazy load pages for scalability
 const Home = lazy(() => import('./pages/Home'));
@@ -131,6 +132,7 @@ export default function App() {
                     <Route path="/credits" element={<Credits />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
+                    <Route path="*" element={<NotFound />} />
                   </Route>
                 </Routes>
               </Suspense>

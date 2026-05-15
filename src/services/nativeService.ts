@@ -48,12 +48,17 @@ class NativeService {
     }
   }
 
-  initHardwareButtons(onBack: () => void) {
+  initHardwareButtons(onBack: () => void): (() => void) | undefined {
     if (this.isNative) {
-      App.addListener('backButton', () => {
+      const listener = App.addListener('backButton', () => {
         onBack();
       });
+      // Return cleanup function
+      return () => {
+        listener.then(handle => handle.remove());
+      };
     }
+    return undefined;
   }
 }
 

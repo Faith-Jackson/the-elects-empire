@@ -6,3 +6,16 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Native platform builds
+android/
+ios/
+
+# Electron build output
+out/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

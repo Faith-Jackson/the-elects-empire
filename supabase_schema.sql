@@ -259,6 +259,7 @@ CREATE TABLE IF NOT EXISTS reading_plans (
 ALTER TABLE reading_plans ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Plans are viewable by everyone." ON reading_plans FOR SELECT USING (true);
 CREATE POLICY "Only admins can manage plans." ON reading_plans FOR ALL USING (is_admin());
+CREATE POLICY "Authenticated users can create AI plans." ON reading_plans FOR INSERT WITH CHECK (auth.uid() = creator_id AND is_ai = true);
 
 -- 15. Ebooks
 CREATE TABLE IF NOT EXISTS ebooks (
@@ -370,7 +371,7 @@ ALTER TABLE events ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Events are viewable by everyone." ON events FOR SELECT USING (true);
 CREATE POLICY "Only admins can manage events." ON events FOR ALL USING (is_admin());
 
--- 20. Drafts
+-- 21. Drafts
 CREATE TABLE IF NOT EXISTS drafts (
   id TEXT PRIMARY KEY, -- unique string ID
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
@@ -549,7 +550,7 @@ CREATE POLICY "Members can view discussions." ON study_group_discussions FOR SEL
   EXISTS (SELECT 1 FROM study_group_memberships WHERE group_id = study_group_discussions.group_id AND user_id = auth.uid()) OR is_admin()
 );
 CREATE POLICY "Members can post discussions." ON study_group_discussions FOR INSERT WITH CHECK (
-  EXISTS (SELECT 1 FROM study_group_memberships WHERE group_id = group_id AND user_id = auth.uid())
+  EXISTS (SELECT 1 FROM study_group_memberships WHERE study_group_memberships.group_id = study_group_discussions.group_id AND study_group_memberships.user_id = auth.uid())
 );
 
 -- 32. Notebook Folders
@@ -600,15 +601,67 @@ CREATE POLICY "Likes are viewable by everyone." ON likes FOR SELECT USING (true)
 CREATE POLICY "Users can manage own likes." ON likes FOR ALL USING (auth.uid() = user_id);
 
 -- 35. Performance Indexes for Scalability
+-- Profiles
 CREATE INDEX IF NOT EXISTS idx_profiles_role ON profiles(role);
 CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
+CREATE INDEX IF NOT EXISTS idx_profiles_online ON profiles(isOnline) WHERE isOnline = true;
+
+-- User-scoped content (critical for RLS performance)
+CREATE INDEX IF NOT EXISTS idx_highlights_user_id ON highlights(user_id);
+CREATE INDEX IF NOT EXISTS idx_highlights_book_chapter ON highlights(user_id, book, chapter);
+CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id);
+CREATE INDEX IF NOT EXISTS idx_notes_book_chapter ON notes(user_id, book, chapter);
 CREATE INDEX IF NOT EXISTS idx_prayers_user_id ON prayers(user_id);
 CREATE INDEX IF NOT EXISTS idx_prayers_status ON prayers(status);
 CREATE INDEX IF NOT EXISTS idx_bookmarks_user_id ON bookmarks(user_id);
+CREATE INDEX IF NOT EXISTS idx_bookmarks_item ON bookmarks(item_id, item_type);
+CREATE INDEX IF NOT EXISTS idx_reading_progress_user_id ON reading_progress(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_plans_user_id ON user_plans(user_id);
+
+-- Forum
 CREATE INDEX IF NOT EXISTS idx_threads_category_id ON threads(category_id);
 CREATE INDEX IF NOT EXISTS idx_threads_creator_id ON threads(creator_id);
+CREATE INDEX IF NOT EXISTS idx_threads_last_activity ON threads(last_activity DESC);
 CREATE INDEX IF NOT EXISTS idx_posts_thread_id ON posts(thread_id);
 CREATE INDEX IF NOT EXISTS idx_posts_user_id ON posts(user_id);
-CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id, read);
+
+-- Content archives (admin-managed, queried by all)
+CREATE INDEX IF NOT EXISTS idx_articles_created_at ON articles(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_articles_category ON articles(category);
+CREATE INDEX IF NOT EXISTS idx_devotionals_date ON devotionals(date DESC);
+CREATE INDEX IF NOT EXISTS idx_devotionals_publish_date ON devotionals(publish_date DESC);
+CREATE INDEX IF NOT EXISTS idx_sermons_date ON sermons(date DESC);
+CREATE INDEX IF NOT EXISTS idx_sermons_series ON sermons(series);
+CREATE INDEX IF NOT EXISTS idx_music_created_at ON music(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_videos_created_at ON videos(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_prophetic_words_created_at ON prophetic_words(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_events_date ON events(date ASC);
+
+-- Study groups
+CREATE INDEX IF NOT EXISTS idx_study_groups_creator ON study_groups(creator_id);
+CREATE INDEX IF NOT EXISTS idx_study_group_memberships_group ON study_group_memberships(group_id);
+CREATE INDEX IF NOT EXISTS idx_study_group_memberships_user ON study_group_memberships(user_id);
+CREATE INDEX IF NOT EXISTS idx_study_group_discussions_group ON study_group_discussions(group_id);
+
+-- Collections
+CREATE INDEX IF NOT EXISTS idx_collections_content_type ON collections(content_type);
+CREATE INDEX IF NOT EXISTS idx_collection_items_collection ON collection_items(collection_id);
+
+-- Notebooks
 CREATE INDEX IF NOT EXISTS idx_notebook_notes_user_id ON notebook_notes(user_id);
 CREATE INDEX IF NOT EXISTS idx_notebook_notes_folder_id ON notebook_notes(folder_id);
+CREATE INDEX IF NOT EXISTS idx_notebook_folders_user_id ON notebook_folders(user_id);
+
+-- Notifications & AI
+CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id, read);
+CREATE INDEX IF NOT EXISTS idx_ai_chats_user_id ON ai_chats(user_id);
+CREATE INDEX IF NOT EXISTS idx_journals_user_id ON journals(user_id);
+CREATE INDEX IF NOT EXISTS idx_manna_history_user_day ON manna_history(user_id, day DESC);
+
+-- Likes
+CREATE INDEX IF NOT EXISTS idx_likes_user_id ON likes(user_id);
+CREATE INDEX IF NOT EXISTS idx_likes_item ON likes(item_id, item_type);
+
+-- Ebooks
+CREATE INDEX IF NOT EXISTS idx_ebook_chapters_ebook ON ebook_chapters(ebook_id, chapter_order);
+CREATE INDEX IF NOT EXISTS idx_study_guides_category ON study_guides(category);
