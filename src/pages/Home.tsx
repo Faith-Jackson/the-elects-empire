@@ -1,6 +1,6 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { BookOpen, AlertCircle, FileText, Book, Video, Users, BookMarked, UserPlus, MessageSquare, HandHelping, ListChecks, BookOpenText, Mic, BrainCircuit, Shield, Music, ChevronRight, Sun, Feather } from 'lucide-react';
+import { BookOpen, AlertCircle, FileText, Book, Video, Users, BookMarked, UserPlus, MessageSquare, HandHelping, ListChecks, BookOpenText, Mic, BrainCircuit, Shield, Music, ChevronRight, Sun, Feather, Zap } from 'lucide-react';
 import { motion } from "motion/react";
 import VerseOfTheDay from '../components/VerseOfTheDay';
 import CommunityHeartbeat from '../components/CommunityHeartbeat';
@@ -8,6 +8,8 @@ import MannaJar from '../components/MannaJar';
 import AppLogo from '../components/AppLogo';
 import { HelpTooltip } from '../components/HelpTooltip';
 import SEO from '../components/SEO';
+import DynamicFeatureWidget from '../components/DynamicFeatureWidget';
+import { SacredBanner } from '../components/BeautifulWidgets';
 
 export default function Home() {
   const { user, profile, loading } = useAuth();
@@ -153,6 +155,21 @@ export default function Home() {
         </motion.div>
       </div>
 
+      {/* Dynamic Feature Spotlight */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="relative z-10"
+      >
+        <div className="flex items-center gap-3 mb-6 px-4">
+           <Zap size={20} className="text-[var(--color-primary)] animate-pulse" />
+           <h2 className="text-2xl font-serif font-bold text-[var(--color-text)]">Empire Spotlight</h2>
+           <div className="h-px flex-1 bg-gradient-to-r from-[var(--color-border-subtle)] to-transparent" />
+        </div>
+        <DynamicFeatureWidget />
+      </motion.div>
+
       {/* Global Connection Ticker */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.98 }}
@@ -283,6 +300,17 @@ export default function Home() {
           ))}
         </motion.div>
       </div>
+
+      {user && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="pt-12"
+        >
+          <SacredBanner />
+        </motion.div>
+      )}
 
       {user && <MannaJar />}
     </motion.div>

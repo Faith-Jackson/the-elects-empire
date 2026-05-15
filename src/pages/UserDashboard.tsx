@@ -10,6 +10,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 import ScriptureArtGenerator from '../components/ScriptureArtGenerator';
 import MannaJar from '../components/MannaJar';
+import { SpiritualPulse } from '../components/BeautifulWidgets';
 
 interface Highlight {
   id: string;
@@ -249,38 +250,7 @@ export default function UserDashboard() {
               </div>
           </div>
 
-          <div className="glass-panel p-8 rounded-[2.5rem] border border-[var(--color-border-subtle)] flex flex-col">
-              <div className="flex items-center gap-3 mb-8">
-                  <div className="p-2 bg-blue-500/10 rounded-xl text-blue-400">
-                      <TrendingUp size={20} />
-                  </div>
-                  <div>
-                      <h3 className="font-serif font-bold text-lg text-[var(--color-text)]">Prayer Trends</h3>
-                      <p className="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] font-black">Intercession Volume</p>
-                  </div>
-              </div>
-              <div className="flex-1 min-h-[200px]" style={{ minWidth: 0 }}>
-                  <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                      <BarChart data={readingData}>
-                        <Bar dataKey="prayers" radius={[10, 10, 0, 0]}>
-                            {readingData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={index === readingData.length - 1 ? 'var(--color-primary)' : 'var(--color-border-subtle)'} />
-                            ))}
-                        </Bar>
-                        <Tooltip 
-                            cursor={{ fill: 'var(--color-text-muted)', opacity: 0.05 }}
-                            contentStyle={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border-subtle)', borderRadius: '12px', color: 'var(--color-text)' }}
-                        />
-                      </BarChart>
-                  </ResponsiveContainer>
-              </div>
-              <div className="pt-6 border-t border-[var(--color-border-subtle)] mt-auto">
-                  <div className="flex items-center justify-between text-xs">
-                      <span className="text-[var(--color-text-muted)]">Avg. Daily Prayers</span>
-                      <span className="text-[var(--color-text)] font-bold">2.4</span>
-                  </div>
-              </div>
-          </div>
+          <SpiritualPulse />
       </div>
 
       {/* AI Spiritual Insight Section */}

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import CommandSearch from '../CommandSearch';
 import AppLogo from '../AppLogo';
 import GuidedTour from '../GuidedTour';
+import FloatingActionMenu from '../FloatingActionMenu';
 
 export default function Layout() {
   const { profile, user, logout, toggleAdminMode, isAdminMode } = useAuth();
@@ -378,6 +379,7 @@ export default function Layout() {
          </button>
       </div>
 
+      <FloatingActionMenu />
       <GuidedTour />
     </div>
   );
