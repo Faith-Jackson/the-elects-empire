@@ -7,6 +7,7 @@ import CommunityHeartbeat from '../components/CommunityHeartbeat';
 import MannaJar from '../components/MannaJar';
 import AppLogo from '../components/AppLogo';
 import { HelpTooltip } from '../components/HelpTooltip';
+import SEO from '../components/SEO';
 
 export default function Home() {
   const { user, profile, loading } = useAuth();
@@ -22,6 +23,11 @@ export default function Home() {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-7xl mx-auto space-y-12 p-4 md:p-8 mb-24"
     >
+      <SEO 
+        title="The Elects Empire - Centered in Jesus Christ"
+        description="Join a chosen generation in a digital sanctuary for deep biblical findings, communal prayer, and spiritual growth. The Elects Empire is your platform for faith and fellowship."
+        keywords="Jesus Christ, Elects Empire, Bible Study, Christian Fellowship, Prayer Wall, Faith Growth"
+      />
       {/* Admin Command Strip */}
       {isAdmin && (
         <motion.div 

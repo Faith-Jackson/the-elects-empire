@@ -598,3 +598,17 @@ CREATE TABLE IF NOT EXISTS likes (
 ALTER TABLE likes ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Likes are viewable by everyone." ON likes FOR SELECT USING (true);
 CREATE POLICY "Users can manage own likes." ON likes FOR ALL USING (auth.uid() = user_id);
+
+-- 35. Performance Indexes for Scalability
+CREATE INDEX IF NOT EXISTS idx_profiles_role ON profiles(role);
+CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
+CREATE INDEX IF NOT EXISTS idx_prayers_user_id ON prayers(user_id);
+CREATE INDEX IF NOT EXISTS idx_prayers_status ON prayers(status);
+CREATE INDEX IF NOT EXISTS idx_bookmarks_user_id ON bookmarks(user_id);
+CREATE INDEX IF NOT EXISTS idx_threads_category_id ON threads(category_id);
+CREATE INDEX IF NOT EXISTS idx_threads_creator_id ON threads(creator_id);
+CREATE INDEX IF NOT EXISTS idx_posts_thread_id ON posts(thread_id);
+CREATE INDEX IF NOT EXISTS idx_posts_user_id ON posts(user_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id, read);
+CREATE INDEX IF NOT EXISTS idx_notebook_notes_user_id ON notebook_notes(user_id);
+CREATE INDEX IF NOT EXISTS idx_notebook_notes_folder_id ON notebook_notes(folder_id);
