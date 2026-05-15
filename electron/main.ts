@@ -90,7 +90,15 @@ function createWindow() {
   if (isDev) {
     win.loadURL('http://localhost:3000');
   } else {
-    win.loadFile(path.join(process.cwd(), 'dist/index.html'));
+    // In production, load the built index.html
+    // __dirname is the directory of the current file (electron/main.ts)
+    // We need to go up one level to find the dist folder
+    win.loadFile(path.join(__dirname, '../dist/index.html'));
+  }
+
+  // Set App User Model ID for Windows notifications
+  if (process.platform === 'win32') {
+    app.setAppUserModelId('com.electsempire.app');
   }
 }
 
