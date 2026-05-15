@@ -204,8 +204,8 @@ export default function Layout() {
                  </div>
                </div>
              ) : (
-                <Link to="/profile" className="w-9 h-9 rounded-full bg-[var(--color-text)]/5 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all shadow-inner border border-[var(--color-border-subtle)] group">
-                  <LogIn size={18} className="group-hover:scale-110 transition-transform" />
+                <Link to="/profile" className="p-2 rounded-full text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all group">
+                  <LogIn size={22} className="group-hover:scale-110 transition-transform" />
                 </Link>
              )}
            </div>
@@ -233,7 +233,7 @@ export default function Layout() {
                 
                 <div className="flex-1 overflow-y-auto px-6 pb-24">
                   <div className="flex items-center gap-4 mb-8">
-                     <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-clay)] flex items-center justify-center text-white font-bold text-lg uppercase shadow-neon-glow">
+                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg uppercase shadow-neon-glow transition-all ${user ? 'bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-clay)] text-white' : 'text-[var(--color-primary)] bg-[var(--color-primary)]/10'}`}>
                        {user ? initials : <LogIn size={24} />}
                      </div>
                      <div>
