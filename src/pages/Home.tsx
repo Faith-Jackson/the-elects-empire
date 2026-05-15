@@ -263,7 +263,7 @@ export default function Home() {
         >
           {[
             { to: '/prayers', icon: HandHelping, label: 'Prayers', desc: 'Prayer Wall', color: 'text-rose-400', bg: 'bg-rose-500/5' },
-            { to: '/jpw', icon: Feather, label: 'JPW', desc: 'Prophetic Words', color: 'text-sky-400', bg: 'bg-sky-500/5' },
+            { to: '/jpw', icon: Feather, label: 'JPW', desc: 'Journey of Prophetic Words', color: 'text-sky-400', bg: 'bg-sky-500/5' },
             { to: '/study-groups', icon: UserPlus, label: 'Groups', desc: 'Fellowship', color: 'text-emerald-400', bg: 'bg-emerald-500/5' },
             { to: '/forum', icon: MessageSquare, label: 'Forum', desc: 'Discussion', color: 'text-amber-400', bg: 'bg-amber-500/5' },
             { to: '/devotionals', icon: Sun, label: 'Devotional', desc: 'Life & Immortality', color: 'text-indigo-400', bg: 'bg-indigo-500/5' },

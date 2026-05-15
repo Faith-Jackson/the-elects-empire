@@ -50,21 +50,19 @@ export default function StudyGuides() {
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-8 mb-20">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-        <div>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 bg-[var(--color-primary)]/10 rounded-2xl text-[var(--color-primary)] border border-[var(--color-primary)]/20 shadow-neon">
-              <GraduationCap size={28} />
-            </div>
-            <h1 className="text-4xl font-serif font-black text-[var(--color-text)] tracking-tight">Study Guides</h1>
-          </div>
-          <p className="text-[var(--color-text-muted)] max-w-md font-medium text-sm">
-            Curated bibliographies and structured paths to help you grow in your understanding of Christ.
-          </p>
-          <p className="text-[var(--color-primary)] text-xs font-bold uppercase tracking-widest mt-2">Grow in wisdom, knowledge and understanding.</p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+        <div className="space-y-4">
+           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+              <GraduationCap size={12} className="text-[var(--color-primary)]" />
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Imperial Knowledge</span>
+           </div>
+           <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">Study Guides</h1>
+           <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+             "Structured paths for deepening your walk with the Master."
+           </p>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 h-fit">
           <div className="relative group">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors" size={18} />
             <input 

@@ -40,8 +40,8 @@ const features: Feature[] = [
   },
   {
     id: 'jpw',
-    title: 'Prophetic Words',
-    description: 'Explore the archives of the Jesus Prophetic Words (JPW) for divine guidance and insight.',
+    title: 'JPW',
+    description: 'Explore the Journey of Prophetic Words (JPW) for divine guidance and insight.',
     icon: Sparkles,
     color: 'text-purple-400',
     bgImage: 'https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&q=80&w=1200',

@@ -35,9 +35,19 @@ export default function Forum() {
 
   if (loading) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin text-[var(--color-primary)]" /></div>;
 
-  return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-serif text-[var(--color-text)] mb-8">Community Forum</h1>
+    <div className="p-8 max-w-4xl mx-auto space-y-12 mb-20">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-4">
+           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+              <MessageSquare size={12} className="text-[var(--color-primary)]" />
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Imperial Discourse</span>
+           </div>
+           <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">Forum</h1>
+           <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+             "Iron sharpens iron. Discuss, debate, and grow together in the knowledge of Christ."
+           </p>
+        </div>
+      </div>
       
       <OnlineUsers />
 

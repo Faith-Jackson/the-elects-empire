@@ -430,11 +430,20 @@ export default function BibleReader() {
   // Show bottom bar when verses are selected
   useEffect(() => {
     if (selectedVerses.length > 0) {
-      setIsBottomBarVisible(true);
-    } else {
-      setIsBottomBarVisible(false);
+      localStorage.setItem('last_selected_verses', JSON.stringify(selectedVerses));
     }
+    
+    // Hide FAM when verses are selected to prevent overlap with the bottom bar
+    window.dispatchEvent(new CustomEvent('fam-visibility', { detail: selectedVerses.length === 0 }));
   }, [selectedVerses]);
+
+  // Handle FAM visibility on mount/unmount of the reader itself if needed, 
+  // but the selection state above is more specific.
+  useEffect(() => {
+    return () => {
+      window.dispatchEvent(new CustomEvent('fam-visibility', { detail: true }));
+    };
+  }, []);
 
   // Reader Mode Overlay Timout
   useEffect(() => {

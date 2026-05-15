@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { LinkifiedText } from '../components/LinkifiedText';
 import { motion } from 'motion/react';
-import { BookOpen, Calendar, Quote, Sparkles } from 'lucide-react';
+import { BookOpen, Calendar, Quote, Sparkles, Sun } from 'lucide-react';
 import Markdown from 'react-markdown';
 
 interface Devotional {
@@ -43,12 +43,18 @@ export default function Devotionals() {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-8 pb-32 animate-fade-in min-h-screen">
-      <div className="flex items-center gap-4 mb-10">
-        <div className="p-3 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] shadow-neon-glow ring-1 ring-[var(--color-primary)]/20 animate-pulse">
-          <Sparkles size={24} />
+    <div className="max-w-4xl mx-auto p-4 md:p-8 pb-32 animate-fade-in min-h-screen space-y-12">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-4">
+           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+              <Sun size={12} className="text-[var(--color-primary)]" />
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Daily Illumination</span>
+           </div>
+           <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">Devotional</h1>
+           <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+             "Daily illumination for the life and immortality of the soul."
+           </p>
         </div>
-        <h1 className="text-3xl md:text-5xl font-serif font-bold text-[var(--color-text)] tracking-tight">Life & Immortality</h1>
       </div>
 
       {loading ? (

@@ -42,12 +42,20 @@ export default function CalendarView() {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-4xl mx-auto p-4 md:p-8 pb-24"
+      className="max-w-4xl mx-auto p-4 md:p-8 pb-32 space-y-12"
     >
-      <header className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-serif font-black mb-4">Upcoming Events</h1>
-        <p className="text-[var(--color-text-muted)] text-lg">Join us in fellowship and growth.</p>
-      </header>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-4">
+           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+              <CalendarIcon size={12} className="text-[var(--color-primary)]" />
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Imperial Gatherings</span>
+           </div>
+           <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">Events</h1>
+           <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+             "Moments of meeting. Keep track of the Empire's collective appointments."
+           </p>
+        </div>
+      </div>
       
       {loading ? (
         <div className="py-20 text-center text-[var(--color-text-muted)]">Loading events...</div>

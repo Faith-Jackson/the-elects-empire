@@ -57,7 +57,7 @@ export default function Layout() {
   ];
 
   const communityLinks = [
-    { to: '/jpw', icon: Feather, label: 'Prophetic Words', description: 'Divine guidance' },
+    { to: '/jpw', icon: Feather, label: 'JPW', description: 'Journey of Prophetic Words' },
     { to: '/prayers', icon: HandHelping, label: 'Prayers', description: 'Join in prayer' },
     { to: '/study-groups', icon: UserPlus, label: 'Groups', description: 'Connect' },
     { to: '/forum', icon: MessageSquare, label: 'Forum', description: 'Discuss' },
@@ -204,8 +204,8 @@ export default function Layout() {
                  </div>
                </div>
              ) : (
-                <Link to="/profile" className="flex items-center gap-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-4 py-2 rounded-full text-sm font-medium hover:bg-[var(--color-primary)] hover:text-[var(--color-background)] transition-all shadow-neon-glow">
-                  <LogIn size={16} /> <span className="hidden sm:inline">Sign In</span>
+                <Link to="/profile" className="w-9 h-9 rounded-full bg-[var(--color-text)]/5 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all shadow-inner border border-[var(--color-border-subtle)] group">
+                  <User size={18} className="group-hover:scale-110 transition-transform" />
                 </Link>
              )}
            </div>
@@ -234,11 +234,11 @@ export default function Layout() {
                 <div className="flex-1 overflow-y-auto px-6 pb-24">
                   <div className="flex items-center gap-4 mb-8">
                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-clay)] flex items-center justify-center text-white font-bold text-lg uppercase shadow-neon-glow">
-                       {initials}
+                       {user ? initials : <User size={24} />}
                      </div>
                      <div>
-                       <h3 className="font-serif font-bold text-xl text-[var(--color-text)]">{user ? (profile?.displayName || 'Royal Priest') : <Link to="/profile" className="text-[var(--color-primary)] hover:underline">Sign In</Link>}</h3>
-                       <p className="text-xs text-[var(--color-text-muted)] uppercase tracking-widest font-black">{user ? 'Spiritual Citizen' : 'Guest'}</p>
+                       <h3 className="font-serif font-bold text-xl text-[var(--color-text)]">{user ? (profile?.displayName || 'Royal Priest') : <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="text-[var(--color-primary)] hover:underline">Sign In</Link>}</h3>
+                       <p className="text-xs text-[var(--color-text-muted)] uppercase tracking-widest font-black">{user ? 'Spiritual Citizen' : 'Guest Traveler'}</p>
                      </div>
                   </div>
 

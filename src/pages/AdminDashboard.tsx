@@ -948,7 +948,7 @@ export default function AdminDashboard() {
     { title: 'Articles', tab: 'article', icon: FileText },
     { title: 'Ebooks', tab: 'ebook', icon: BookOpen },
     { title: 'Video Lessons', tab: 'video', icon: BookOpen },
-    { title: 'Prophetic Words', tab: 'jpw', icon: BookMarked },
+    { title: 'JPW', tab: 'jpw', icon: BookMarked },
     { title: 'Reading Plans', tab: 'plans', icon: ListChecks },
     { title: 'Study Guides', tab: 'study-guides', icon: GraduationCap },
     { title: 'System', tab: 'system', icon: Database },

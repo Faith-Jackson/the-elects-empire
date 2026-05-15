@@ -211,13 +211,19 @@ export default function Prayers() {
   );
 
   return (
-    <div className="max-w-4xl mx-auto p-6 md:p-10 mb-20">
-        <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-4xl font-serif font-bold text-[var(--color-primary)]">Prayer Wall</h1>
-              <p className="text-[var(--color-primary)] text-xs font-bold uppercase tracking-widest mt-1">Share burdens, find strength in Christ.</p>
-            </div>
-          <div className="flex bg-[var(--color-text)]/5 p-1 rounded-xl border border-[var(--color-border-subtle)]">
+    <div className="max-w-4xl mx-auto p-6 md:p-10 mb-20 space-y-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="space-y-4">
+             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+                <HandHelping size={12} className="text-[var(--color-primary)]" />
+                <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Imperial Intercession</span>
+             </div>
+             <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">Prayers</h1>
+             <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+               "Join the corporate intercession of the Empire. Every prayer is a seed in the eternal kingdom."
+             </p>
+          </div>
+          <div className="flex bg-[var(--color-text)]/5 p-1 rounded-xl border border-[var(--color-border-subtle)] h-fit">
             <button 
               onClick={() => setViewMode('community')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${viewMode === 'community' ? 'bg-[var(--color-primary)] text-[var(--color-background)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}

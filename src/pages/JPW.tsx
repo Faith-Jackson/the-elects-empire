@@ -63,10 +63,19 @@ export default function JPW() {
     );
 
     return (
-        <div className="max-w-4xl mx-auto p-6 md:p-10 mb-20">
-            <h1 className="text-4xl font-serif font-bold mb-8 text-[var(--color-primary)] flex items-center gap-3 drop-shadow-neon">
-                <Feather /> Journey of Prophetic Word
-            </h1>
+        <div className="max-w-4xl mx-auto p-6 md:p-10 mb-20 space-y-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="space-y-4">
+                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+                    <Feather size={12} className="text-[var(--color-primary)]" />
+                    <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Divine Declarations</span>
+                 </div>
+                 <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">JPW</h1>
+                 <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+                   "Explore the divine declarations and prophetic insights that shape our collective journey."
+                 </p>
+              </div>
+            </div>
             
             {/* Search */}
             <div className="mb-8 relative">

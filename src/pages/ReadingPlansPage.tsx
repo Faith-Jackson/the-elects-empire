@@ -107,12 +107,17 @@ export default function ReadingPlansPage() {
   if (loading) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin text-[var(--color-primary)]" /></div>;
 
   return (
-    <div className="p-4 md:p-8 max-w-5xl mx-auto text-white">
-      <div className="flex items-center gap-3 mb-8">
-        <Calendar className="text-[var(--color-primary)] drop-shadow-neon w-8 h-8" />
-        <div>
-          <h1 className="text-3xl font-serif font-bold">Reading Plans</h1>
-          <p className="text-[var(--color-primary)] text-xs font-bold uppercase tracking-widest mt-1">Structured paths for spiritual growth.</p>
+    <div className="p-4 md:p-8 max-w-5xl mx-auto text-white space-y-12 mb-24">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-4">
+           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+              <Calendar size={12} className="text-[var(--color-primary)]" />
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Imperial Strategy</span>
+           </div>
+           <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">Plans</h1>
+           <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+             "Strategic reading plans to immerse yourself in the fullness of Scripture."
+           </p>
         </div>
       </div>
 

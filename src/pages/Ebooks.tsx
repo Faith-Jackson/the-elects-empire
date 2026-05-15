@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
+import { BookOpenText } from 'lucide-react';
+
 interface Ebook {
   id: string;
   title: string;
@@ -22,8 +24,19 @@ export default function Ebooks() {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto p-4 md:p-12 pb-24 md:pb-12 animate-fade-in">
-      <h1 className="text-3xl md:text-5xl font-serif font-bold mb-8 md:mb-12">E-Books Library</h1>
+    <div className="max-w-6xl mx-auto p-4 md:p-12 pb-32 animate-fade-in space-y-12">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-4">
+           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+              <BookOpenText size={12} className="text-[var(--color-primary)]" />
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Sacred Library</span>
+           </div>
+           <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">Ebooks</h1>
+           <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+             "Curated spiritual resources and library of the saints."
+           </p>
+        </div>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
         {ebooks.map((ebook) => (
           <div 

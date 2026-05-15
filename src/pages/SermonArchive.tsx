@@ -95,18 +95,19 @@ export default function SermonArchive() {
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-8 mb-20 space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-[var(--color-primary)]/20 rounded-2xl flex items-center justify-center text-[var(--color-primary)] shadow-neon">
-            <Mic size={32} />
-          </div>
-          <div>
-            <h1 className="text-4xl font-serif font-bold text-white tracking-tight">Sermon Sanctuary</h1>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-bold">Listen and be Transformed</p>
-          </div>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+        <div className="space-y-4">
+           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+              <Mic size={12} className="text-[var(--color-primary)]" />
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Imperial Pulpit</span>
+           </div>
+           <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">Sermons</h1>
+           <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+             "The vocal archives of the Empire. Faith comes by hearing."
+           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-3 h-fit">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={18} />
             <input 

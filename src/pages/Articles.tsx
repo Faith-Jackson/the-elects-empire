@@ -73,12 +73,20 @@ export default function Articles() {
 
   return (
     <div className="max-w-5xl mx-auto p-4 md:p-8 pb-32 animate-fade-in min-h-screen">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl md:text-5xl font-serif font-bold text-[var(--color-text)] tracking-tight">Articles</h1>
-        <div className="w-12 h-12 rounded-2xl bg-[var(--color-text)]/5 border border-[var(--color-border-subtle)] flex items-center justify-center">
-          <FileText className="text-[var(--color-primary)]" />
+      {!selectedArticle && (
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="space-y-4">
+             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+                <FileText size={12} className="text-[var(--color-primary)]" />
+                <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Imperial Archives</span>
+             </div>
+             <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">Articles</h1>
+             <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+               "Deep findings and spiritual archives for the diligent student of the Word."
+             </p>
+          </div>
         </div>
-      </div>
+      )}
 
       {!selectedArticle && (
         <CollectionCarousel 

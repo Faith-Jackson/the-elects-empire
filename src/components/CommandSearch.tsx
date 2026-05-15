@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 interface SearchResult {
   id: string;
   title: string;
-  type: 'Article' | 'Devotional' | 'Prophetic Word' | 'Forum' | 'Ebook' | 'Study Group' | 'Disciple' | 'Sermon' | 'Scripture' | 'Music';
+  type: 'Article' | 'Devotional' | 'JPW' | 'Forum' | 'Ebook' | 'Study Group' | 'Disciple' | 'Sermon' | 'Scripture' | 'Music';
   path: string;
   content: string;
 }
@@ -31,7 +31,7 @@ export default function CommandSearch({ isOpen, setIsOpen }: CommandSearchProps)
     const collections = [
       { name: 'articles', type: 'Article', path: '/articles' },
       { name: 'devotionals', type: 'Devotional', path: '/devotionals' },
-      { name: 'prophetic_words', type: 'Prophetic Word', path: '/jpw' },
+      { name: 'prophetic_words', type: 'JPW', path: '/jpw' },
       { name: 'threads', type: 'Forum', path: '/threads' },
       { name: 'ebooks', type: 'Ebook', path: '/ebooks' },
       { name: 'study_groups', type: 'Study Group', path: '/study-groups' },
@@ -130,7 +130,7 @@ export default function CommandSearch({ isOpen, setIsOpen }: CommandSearchProps)
     switch (type) {
       case 'Article': return <FileText size={14} />;
       case 'Devotional': return <Sun size={14} />;
-      case 'Prophetic Word': return <Feather size={14} />;
+      case 'JPW': return <Feather size={14} />;
       case 'Forum': return <MessageSquare size={14} />;
       case 'Ebook': return <BookOpen size={14} />;
       case 'Study Group': return <Users size={14} />;

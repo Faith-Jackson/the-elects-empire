@@ -150,19 +150,21 @@ export default function UserDashboard() {
   return (
     <div className="flex-1 overflow-y-auto p-4 md:p-8 max-w-7xl mx-auto w-full space-y-8 pb-32">
       {/* Header Section */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6"
-      >
-        <div>
-          <h1 className="text-3xl md:text-5xl font-serif font-bold text-[var(--color-text)] tracking-tight mb-2">
-            Peace be with you, <span className="text-[var(--color-primary)]">{profile?.displayName?.split(' ')[0] || 'Seeker'}</span>
-          </h1>
-          <p className="text-[var(--color-text-muted)] text-base md:text-lg">Continue your journey through the Word today.</p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+        <div className="space-y-4">
+           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
+              <Activity size={12} className="text-[var(--color-primary)]" />
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--color-primary)] font-black">Imperial Headquarters</span>
+           </div>
+           <h1 className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text)] tracking-tightest leading-[0.9]">
+             Shalom, <span className="text-[var(--color-primary)]">{profile?.displayName?.split(' ')[0] || 'Seeker'}</span>
+           </h1>
+           <p className="text-[var(--color-text-muted)] text-lg md:text-xl font-serif max-w-2xl italic leading-relaxed">
+             "The central hub of your spiritual activities and archival records."
+           </p>
         </div>
-        
-        <div className="flex gap-2 md:gap-4">
+
+        <div className="flex gap-2 md:gap-4 h-fit">
           <Link to="/profile" className="flex-1 md:flex-none justify-center flex items-center gap-2 glass-panel px-4 py-2 rounded-xl text-sm hover:bg-[var(--color-text)]/10 transition-colors">
             <UserIcon size={18} /> Profile
           </Link>
@@ -170,7 +172,7 @@ export default function UserDashboard() {
             <BookOpen size={18} /> Start Reading
           </Link>
         </div>
-      </motion.div>
+      </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -480,7 +482,7 @@ export default function UserDashboard() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           { to: '/prayers', icon: HandHelping, label: 'Prayers', desc: 'Prayer wall' },
-          { to: '/jpw', icon: Feather, label: 'JPW', desc: 'Journey of Prophetic words' },
+          { to: '/jpw', icon: Feather, label: 'JPW', desc: 'Journey of Prophetic Words' },
           { to: '/study-groups', icon: UserPlus, label: 'Groups', desc: 'Connect locally' },
           { to: '/forum', icon: MessageSquare, label: 'Forum', desc: 'Debate & learn' },
           { to: '/devotionals', icon: Sun, label: 'Devotional', desc: 'Life & Immortality' },
