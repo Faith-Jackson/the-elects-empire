@@ -342,7 +342,7 @@ export default function Layout() {
         {/* Workspace content bounds */}
         <div 
           onScroll={handleScroll}
-          className="flex-1 bg-transparent overflow-y-auto overflow-x-hidden flex flex-col relative w-full h-full pb-[70px] md:pb-0"
+          className="flex-1 bg-transparent overflow-y-auto overflow-x-hidden flex flex-col relative w-full h-full pb-mobile-nav md:pb-0"
         >
            <AnimatePresence mode="wait">
              <motion.div

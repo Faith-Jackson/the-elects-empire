@@ -215,10 +215,18 @@
   }
 
   .glass-panel {
-    background-color: color-mix(in srgb, var(--color-surface) 30%, transparent);
-    backdrop-filter: blur(32px) saturate(180%);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    border: 1px solid color-mix(in srgb, var(--color-border-subtle) 20%, transparent);
+    background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid color-mix(in srgb, var(--color-border-subtle) 30%, transparent);
+  }
+
+  @media (min-width: 768px) {
+    .glass-panel {
+      background-color: color-mix(in srgb, var(--color-surface) 30%, transparent);
+      backdrop-filter: blur(32px) saturate(180%);
+      -webkit-backdrop-filter: blur(32px) saturate(180%);
+    }
   }
 
   .glass-card {
@@ -352,16 +360,21 @@
 
   /* Safe Area Utilities for iOS/Notched Devices */
   .pb-safe {
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
   .pt-safe {
-    padding-top: env(safe-area-inset-top);
+    padding-top: max(1rem, env(safe-area-inset-top));
   }
   .pl-safe {
-    padding-left: env(safe-area-inset-left);
+    padding-left: max(1rem, env(safe-area-inset-left));
   }
   .pr-safe {
-    padding-right: env(safe-area-inset-right);
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  /* Additional mobile bottom nav offset */
+  .pb-mobile-nav {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
   }
 }
 

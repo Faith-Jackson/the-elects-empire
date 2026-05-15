@@ -20,8 +20,16 @@ async function callAIProxy(payload: any) {
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'The heavenly archives are momentarily unreachable.');
+    let errorMsg = 'The heavenly archives are momentarily unreachable.';
+    try {
+      const error = await response.json();
+      errorMsg = error.error || errorMsg;
+    } catch (e) {
+      if (response.status === 404) {
+        errorMsg = "The AI Proxy (Edge Function) is not yet deployed to your Supabase project. Please run 'supabase functions deploy ai-proxy'.";
+      }
+    }
+    throw new Error(errorMsg);
   }
 
   return response.json();

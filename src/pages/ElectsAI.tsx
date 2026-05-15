@@ -347,7 +347,7 @@ export default function ElectsAI() {
         </div>
 
         {/* Input */}
-        <div className="p-4 md:p-8 shrink-0">
+        <div className="p-4 md:p-8 shrink-0 pb-mobile-nav md:pb-8">
           <div className="max-w-4xl mx-auto relative group">
             <div className="absolute -inset-1.5 bg-gradient-to-r from-[var(--color-primary)]/30 to-blue-500/30 rounded-[2.5rem] blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"></div>
             <div className="relative flex gap-4 p-2.5 md:p-3 glass-panel border border-[var(--color-border-subtle)] rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-3xl">
