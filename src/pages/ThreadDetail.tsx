@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import { MessageSquare, Loader2, Send, Users } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import BookmarkButton from '../components/BookmarkButton';
+import { checkRateLimit, FORUM_POST_LIMIT, validatePostContent, sanitizeTextInput } from '../lib/security';
 
 export default function ThreadDetail() {
   const { threadId } = useParams<{ threadId: string }>();
@@ -59,6 +60,21 @@ export default function ThreadDetail() {
   const postReply = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim() || !user || !threadId || !thread) return;
+
+    // Rate limit check
+    const { allowed, retryAfterMs } = checkRateLimit(`forum_post_${user.id}`, 10, 60000);
+    if (!allowed) {
+      alert(`You're posting too fast! Please wait ${Math.ceil(retryAfterMs / 1000)} seconds.`);
+      return;
+    }
+
+    // Input validation
+    const validation = validatePostContent(content);
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
+    }
+
     setSending(true);
     try {
       const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
@@ -69,7 +85,7 @@ export default function ThreadDetail() {
         user_id: user.id,
         user_name: userData.displayName || 'Anonymous',
         user_avatar: userData.avatarUrl || '',
-        content,
+        content: sanitizeTextInput(content, 50000),
         created_at: new Date().toISOString()
       }]);
 

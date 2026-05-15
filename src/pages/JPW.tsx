@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
 import { Feather, Search, Trash2, Edit2, Share2, HandHelping } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { sanitizeHTML } from '../lib/security';
 
 export default function JPW() {
     const { user, profile } = useAuth();
@@ -94,7 +95,7 @@ export default function JPW() {
                                 <h3 className="text-2xl text-white font-serif font-bold tracking-tight">{word.title}</h3>
                                 <div 
                                     className="markdown-body prose prose-invert max-w-none text-white/80 leading-relaxed"
-                                    dangerouslySetInnerHTML={{ __html: word.content }}
+                                    dangerouslySetInnerHTML={{ __html: sanitizeHTML(word.content) }}
                                 />
                                 <div className="pt-4 flex items-center gap-4">
                                     <span className="text-[10px] text-[var(--color-primary)] uppercase font-bold tracking-widest bg-[var(--color-primary)]/10 px-3 py-1 rounded-full border border-[var(--color-primary)]/20">

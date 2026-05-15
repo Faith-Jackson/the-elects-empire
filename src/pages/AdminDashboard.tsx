@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from "motion/react";
 import { BookOpen, CalendarDays, FileText, BookMarked, ListChecks, Users, ShieldAlert, Trash2, Mic, GraduationCap, Database, Sparkles, Loader2 } from 'lucide-react';
 import RichTextEditor from '../components/RichTextEditor';
+import { sanitizeTextInput } from '../lib/security';
 
 interface ManagementListProps {
   table: string;
@@ -409,8 +410,8 @@ export default function AdminDashboard() {
     setIsSaving(true);
     try {
       const data = {
-        title: planTitle,
-        description: planDesc,
+        title: sanitizeTextInput(planTitle, 200),
+        description: sanitizeTextInput(planDesc, 1000),
         duration_days: Number(planDays),
         color: planColor,
         readings: planReadings,
@@ -536,7 +537,7 @@ export default function AdminDashboard() {
   const saveCommentary = async () => { 
     if (!commentaryContent) return;
     const id = `${book}_${chapter}_${verse}`.replace(/\s+/g, '_');
-    await supabase.from('commentaries').upsert({ id, book, chapter, verse, content: commentaryContent, author_id: user?.id, updated_at: new Date().toISOString() });
+    await supabase.from('commentaries').upsert({ id, book, chapter, verse, content: sanitizeTextInput(commentaryContent, 50000), author_id: user?.id, updated_at: new Date().toISOString() });
     alert('Commentary saved!'); 
     setCommentaryContent(''); 
   };
@@ -544,7 +545,7 @@ export default function AdminDashboard() {
   const saveBookIntro = async () => {
     if (!introContent) return;
     const id = book.replace(/\s+/g, '_');
-    await supabase.from('book_intros').upsert({ id, book, content: introContent, updated_at: new Date().toISOString() });
+    await supabase.from('book_intros').upsert({ id, book, content: sanitizeTextInput(introContent, 50000), updated_at: new Date().toISOString() });
     alert('Book Introduction saved!');
     setIntroContent('');
   };
@@ -552,7 +553,7 @@ export default function AdminDashboard() {
   const saveChapterSummary = async () => {
     if (!summaryContent) return;
     const id = `${book}_${summaryChapter}`.replace(/\s+/g, '_');
-    await supabase.from('chapter_summaries').upsert({ id, book, chapter: summaryChapter, content: summaryContent, updated_at: new Date().toISOString() });
+    await supabase.from('chapter_summaries').upsert({ id, book, chapter: summaryChapter, content: sanitizeTextInput(summaryContent, 20000), updated_at: new Date().toISOString() });
     alert('Chapter Summary saved!');
     setSummaryContent('');
   };
@@ -562,8 +563,8 @@ export default function AdminDashboard() {
     setIsSaving(true);
     try {
       const data = {
-        title: devoTitle,
-        content: devoContent,
+        title: sanitizeTextInput(devoTitle, 200),
+        content: sanitizeTextInput(devoContent, 50000),
         date: devoDate,
         updated_at: new Date().toISOString()
       };
@@ -590,8 +591,8 @@ export default function AdminDashboard() {
     setIsSaving(true);
     try {
       const data = { 
-        title: articleTitle, 
-        content: articleContent, 
+        title: sanitizeTextInput(articleTitle, 200), 
+        content: sanitizeTextInput(articleContent, 50000), 
         related_verses: relatedVerses, 
         author_id: user?.id, 
         updated_at: new Date().toISOString() 
@@ -618,7 +619,7 @@ export default function AdminDashboard() {
   };
   const saveEbookMetadata = async () => { 
     if (!ebookTitle || !ebookAuthor) { alert('Fill in title and author.'); return; }
-    await supabase.from('ebooks').insert({ title: ebookTitle, author: ebookAuthor, cover_url: ebookCover, created_at: new Date().toISOString(), author_id: user?.id });
+    await supabase.from('ebooks').insert({ title: sanitizeTextInput(ebookTitle, 200), author: sanitizeTextInput(ebookAuthor, 100), cover_url: ebookCover, created_at: new Date().toISOString(), author_id: user?.id });
     alert('Book metadata saved!'); 
     setEbookTitle(''); setEbookAuthor(''); setEbookCover('');
   };
@@ -748,9 +749,9 @@ export default function AdminDashboard() {
     setIsSaving(true);
     try {
       const data = { 
-        title: videoTitle, 
+        title: sanitizeTextInput(videoTitle, 200), 
         url: videoUrl, 
-        description: videoDescription, 
+        description: sanitizeTextInput(videoDescription, 10000), 
         updated_at: new Date().toISOString() 
       };
       if (editId) {
@@ -787,11 +788,11 @@ export default function AdminDashboard() {
 
     try {
       const data = {
-        title: sermonTitle,
-        preacher: sermonPreacher,
-        series: sermonSeries,
+        title: sanitizeTextInput(sermonTitle, 200),
+        preacher: sanitizeTextInput(sermonPreacher, 100),
+        series: sanitizeTextInput(sermonSeries, 100),
         embed_id: embedId,
-        description: sermonDesc,
+        description: sanitizeTextInput(sermonDesc, 10000),
         date: sermonDate,
         updated_at: new Date().toISOString()
       };

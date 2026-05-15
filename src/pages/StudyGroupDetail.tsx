@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { useAuth, UserProfile } from '../hooks/useAuth';
 import { MessageSquare, Loader2, Send, Users, Sparkles, Calendar, ChevronRight, UserPlus, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { checkRateLimit, FORUM_POST_LIMIT, validatePostContent, sanitizeTextInput } from '../lib/security';
 
 interface MemberInfo extends UserProfile {
   id: string;
@@ -130,12 +131,27 @@ export default function StudyGroupDetail() {
   const postDiscussion = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim() || !user || !groupId) return;
+
+    // Rate limit check
+    const { allowed, retryAfterMs } = checkRateLimit(`study_group_${user.id}`, 20, 60000);
+    if (!allowed) {
+      alert(`You're sharing insights a bit too fast! Please wait ${Math.ceil(retryAfterMs / 1000)} seconds.`);
+      return;
+    }
+
+    // Input validation
+    const validation = validatePostContent(content);
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
+    }
+
     setSending(true);
     try {
       await supabase.from('study_group_discussions').insert([{
         group_id: groupId,
         user_id: user.id,
-        content: content,
+        content: sanitizeTextInput(content, 10000),
         created_at: new Date().toISOString()
       }]);
       setContent('');

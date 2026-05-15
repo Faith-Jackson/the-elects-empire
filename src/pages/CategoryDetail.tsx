@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 import { Loader2, Plus, MessageSquare } from 'lucide-react';
+import { checkRateLimit, FORUM_POST_LIMIT, validateThreadTitle, sanitizeTextInput } from '../lib/security';
 
 export default function CategoryDetail() {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -42,10 +43,25 @@ export default function CategoryDetail() {
   const createThread = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newThreadTitle.trim() || !user || !categoryId) return;
+
+    // Rate limit check
+    const { allowed, retryAfterMs } = checkRateLimit(`forum_thread_${user.id}`, 5, 60000);
+    if (!allowed) {
+      alert(`You're creating threads a bit too fast! Please wait ${Math.ceil(retryAfterMs / 1000)} seconds.`);
+      return;
+    }
+
+    // Input validation
+    const validation = validateThreadTitle(newThreadTitle);
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
+    }
+
     setCreating(true);
     try {
       await supabase.from('threads').insert([{
-        title: newThreadTitle,
+        title: sanitizeTextInput(newThreadTitle, 200),
         category_id: categoryId,
         creator_id: user.id,
         post_count: 0,

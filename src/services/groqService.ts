@@ -1,20 +1,30 @@
-import Groq from 'groq-sdk';
+import { supabase } from '../lib/supabase';
+import { checkRateLimit, AI_RATE_LIMIT, AI_GENERATION_LIMIT } from '../lib/security';
 import { APP_FEATURES } from '../constants/appContent';
 
-let groqInstance: Groq | null = null;
+/**
+ * Proxy call to Supabase Edge Function for AI
+ */
+async function callAIProxy(payload: any) {
+  const { data: { session } } = await supabase.auth.getSession();
+  const token = session?.access_token;
 
-function getGroq() {
-  if (!groqInstance) {
-    const apiKey = (import.meta as any).env.VITE_GROQ_API_KEY || (import.meta as any).env.GROQ_API_KEY;
-    if (!apiKey) {
-      throw new Error("VITE_GROQ_API_KEY is missing. Please add it to your secrets in AI Studio with the VITE_ prefix.");
-    }
-    groqInstance = new Groq({
-      apiKey,
-      dangerouslyAllowBrowser: true,
-    });
+  const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-proxy`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token || (import.meta as any).env.VITE_SUPABASE_ANON_KEY}`,
+      'apikey': (import.meta as any).env.VITE_SUPABASE_ANON_KEY,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'The heavenly archives are momentarily unreachable.');
   }
-  return groqInstance;
+
+  return response.json();
 }
 
 const SYSTEM_INSTRUCTION = `
@@ -48,9 +58,15 @@ const COACH_MODIFIERS: Record<AICoachType, string> = {
 };
 
 export async function askElectsAI(prompt: string, history: any[] = [], coach: AICoachType = 'scholar') {
+  // Client-side rate limit check
+  const { allowed, retryAfterMs } = checkRateLimit(AI_RATE_LIMIT.key, AI_RATE_LIMIT.maxRequests, AI_RATE_LIMIT.windowMs);
+  if (!allowed) {
+    throw new Error(`You're moving a bit fast for the Scribe. Please wait ${Math.ceil(retryAfterMs / 1000)} seconds.`);
+  }
+
   try {
     const coachModifier = COACH_MODIFIERS[coach] || "";
-    const response = await getGroq().chat.completions.create({
+    const response = await callAIProxy({
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: 'system' as const, content: `${SYSTEM_INSTRUCTION}\n\n${coachModifier}` },
@@ -62,13 +78,17 @@ export async function askElectsAI(prompt: string, history: any[] = [], coach: AI
     });
 
     return response.choices[0]?.message?.content || "";
-  } catch (error) {
-    console.error("Scribe Groq Error:", error);
-    throw new Error("I'm having trouble connecting to the heavenly archives right now. Please try again in a moment.");
+  } catch (error: any) {
+    console.error("Scribe Error:", error);
+    throw error;
   }
 }
 
 export async function generateSpiritualInsight(userData: { highlights: string[], notes: string[] }) {
+  // Client-side rate limit check
+  const { allowed, retryAfterMs } = checkRateLimit(AI_GENERATION_LIMIT.key, AI_GENERATION_LIMIT.maxRequests, AI_GENERATION_LIMIT.windowMs);
+  if (!allowed) return "The Scribe is reflecting on your previous studies. Please wait a moment.";
+
   const prompt = `
     Based on the following scripture highlights and personal reflections from my study this week, 
     provide a consolidated "Spiritual Wisdom" insight. Connect the themes, offer an encouraging 
@@ -84,7 +104,7 @@ export async function generateSpiritualInsight(userData: { highlights: string[],
   `;
 
   try {
-    const response = await getGroq().chat.completions.create({
+    const response = await callAIProxy({
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: 'system' as const, content: SYSTEM_INSTRUCTION },
@@ -102,6 +122,9 @@ export async function generateSpiritualInsight(userData: { highlights: string[],
 }
 
 export async function generateStudyPlan(topic: string, durationDays: number = 7) {
+  const { allowed, retryAfterMs } = checkRateLimit(AI_GENERATION_LIMIT.key, AI_GENERATION_LIMIT.maxRequests, AI_GENERATION_LIMIT.windowMs);
+  if (!allowed) throw new Error(`Please wait ${Math.ceil(retryAfterMs / 1000)} seconds before generating another plan.`);
+
   const prompt = `
     Create a detailed ${durationDays}-day scripture study plan focused on the theme of "${topic}". 
     
@@ -120,7 +143,7 @@ export async function generateStudyPlan(topic: string, durationDays: number = 7)
   `;
 
   try {
-    const response = await getGroq().chat.completions.create({
+    const response = await callAIProxy({
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: 'system' as const, content: "You are a biblical study curator. Only output valid JSON arrays." },
@@ -130,10 +153,7 @@ export async function generateStudyPlan(topic: string, durationDays: number = 7)
       response_format: { type: "json_object" }
     });
 
-    // Groq's response_format type: "json_object" usually requires "json" in the prompt and returns a single object
-    // If we want an array, we might need to parse it carefully
     let content = response.choices[0]?.message?.content || "[]";
-    // If it's a wrapped object like { "plan": [...] }, adjust
     const parsed = JSON.parse(content);
     return Array.isArray(parsed) ? parsed : (parsed.plan || parsed.study_plan || []);
   } catch (error) {
@@ -152,7 +172,7 @@ export async function getBiblicalRootDetails(word: string, verseText: string) {
   Format the output as a clean markdown string.`;
 
   try {
-    const response = await getGroq().chat.completions.create({
+    const response = await callAIProxy({
       model: "llama-3.3-70b-versatile",
       messages: [{ role: 'user' as const, content: prompt }],
       temperature: 0.3,
@@ -175,7 +195,7 @@ export async function generateJournalEncouragement(entry: string) {
   Format the output as a JSON object with "verse" and "encouragement" keys. Strictly JSON.`;
 
   try {
-    const response = await getGroq().chat.completions.create({
+    const response = await callAIProxy({
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: 'system' as const, content: "You are a compassionate spiritual shepherd. Only output valid JSON." },
@@ -199,7 +219,7 @@ export async function generateDailyManna() {
   Return ONLY JSON with "verse" and "rhema" keys. Strictly JSON.`;
 
   try {
-    const response = await getGroq().chat.completions.create({
+    const response = await callAIProxy({
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: 'system' as const, content: "You are an inspired prophet. Only output valid JSON." },
@@ -236,7 +256,7 @@ export async function generateNoteInsight(title: string, content: string, type: 
   `;
 
   try {
-    const response = await getGroq().chat.completions.create({
+    const response = await callAIProxy({
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: 'system' as const, content: SYSTEM_INSTRUCTION },

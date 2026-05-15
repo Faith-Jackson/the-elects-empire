@@ -16,6 +16,7 @@ import RichTextEditor from '../components/RichTextEditor';
 import { useBibleVerseLinks } from '../lib/bibleLinker';
 import { generateNoteInsight } from '../services/groqService';
 import FlexSearch from 'flexsearch';
+import { sanitizeHTML } from '../lib/security';
 
 const TEMPLATES: Record<NoteType, { title: string, content: string }> = {
   general: { title: 'New Reflection', content: '' },
@@ -634,7 +635,7 @@ export default function Notebook() {
                 </AnimatePresence>
                 
                 {isPreviewMode ? (
-                  <div className="prose prose-2xl prose-invert max-w-none font-serif leading-[1.8]" dangerouslySetInnerHTML={{ __html: activeNote.content }} />
+                  <div className="prose prose-2xl prose-invert max-w-none font-serif leading-[1.8]" dangerouslySetInnerHTML={{ __html: sanitizeHTML(activeNote.content) }} />
                 ) : (
                   <RichTextEditor 
                     key={activeNote.id}

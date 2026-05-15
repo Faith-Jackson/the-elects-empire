@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'motion/react';
 import { Video, Search, Filter, Play, Info, ChevronRight, Hash, PlayCircle } from 'lucide-react';
+import { sanitizeHTML } from '../lib/security';
 import VideoPlayer from '../components/VideoPlayer';
 import CollectionCarousel from '../components/CollectionCarousel';
 import LoveButton from '../components/LoveButton';
@@ -123,7 +124,7 @@ export default function VideoLessons() {
                   <LoveButton itemId={activeVideo.id} itemType="video" />
                   <div 
                     className="text-white/60 prose prose-invert max-w-none prose-sm leading-relaxed mt-4"
-                    dangerouslySetInnerHTML={{ __html: activeVideo.description || '' }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHTML(activeVideo.description || '') }}
                   />
                 </div>
               </motion.div>

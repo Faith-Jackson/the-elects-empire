@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { processBibleReferences, useBibleVerseLinks } from '../lib/bibleLinker';
+import { sanitizeHTML } from '../lib/security';
 
 interface Ebook {
   title: string;
@@ -85,7 +86,7 @@ export default function EbookReader() {
                 <h1 className="text-3xl md:text-4xl font-serif font-bold mb-6 md:mb-8">{activeChapter.title}</h1>
                 <div 
                 className="prose prose-invert prose-base md:prose-lg max-w-none text-gray-300 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: processedContent }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHTML(processedContent) }}
                 />
             </article>
         ) : <p className="text-center opacity-50 mt-12">Select a chapter to begin reading.</p>}
