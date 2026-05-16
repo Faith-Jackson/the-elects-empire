@@ -1367,7 +1367,7 @@ export default function BibleReader() {
               >
                 <X size={20} />
               </button>
-              <div className="p-6 space-y-8 mt-4 md:mt-0">
+              <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-12 pb-mobile-nav">
                   <>
                     <div>
                       <h3 className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-primary)] font-bold mb-6 flex items-center gap-2">
@@ -1438,7 +1438,7 @@ export default function BibleReader() {
       
       {/* Floating Bottom Control Bar (Pill Mode) */}
       {!isReaderMode && (
-        <div className={`fixed md:bottom-8 bottom-24 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ${isBottomBarVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
+        <div className={`fixed md:bottom-8 bottom-0 pb-mobile-nav left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ${isBottomBarVisible ? 'translate-y-0 opacity-100' : 'translate-y-48 opacity-0'}`}>
           <div className="glass-panel rounded-full px-4 py-2 md:px-6 md:py-3 shadow-2xl backdrop-blur-3xl flex items-center gap-3 md:gap-6 bg-[var(--color-surface)]/95 border border-white/20">
             {/* Mobile Nav & Verses Count */}
             <div className="flex items-center gap-2 md:gap-3">
@@ -1795,7 +1795,7 @@ export default function BibleReader() {
                    <div className="markdown-body text-[var(--color-text)] leading-relaxed font-serif">
                       <Markdown>{activeRootStudy.details}</Markdown>
                    </div>
-                   <div className="pt-6 border-t border-white/5 flex justify-between items-center">
+                   <div className="p-4 border-b border-white/5 pb-mobile-nav md:pb-4 flex justify-between items-center">
                       <button 
                         onClick={copyRootDetails}
                         className={`flex items-center gap-2 px-6 py-2.5 rounded-xl border transition-all text-xs font-bold ${

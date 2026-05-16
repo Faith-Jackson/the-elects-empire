@@ -5,6 +5,7 @@ import { BookOpen, Home as HomeIcon, Settings, PenTool, LayoutDashboard, Calenda
 import { useState } from 'react';
 import CommandSearch from '../CommandSearch';
 import AppLogo from '../AppLogo';
+import { Logo } from '../Logo';
 import GuidedTour from '../GuidedTour';
 import FloatingActionMenu from '../FloatingActionMenu';
 
@@ -175,6 +176,7 @@ export default function Layout() {
         {/* Top Header Bar */}
         <header className={`h-[72px] glass-panel border-b border-[var(--color-border-subtle)] flex items-center px-4 md:px-8 justify-between shrink-0 fixed md:sticky top-0 w-full z-30 transition-all duration-500 ${isHeaderVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'}`}>
           <div className="flex items-center gap-4">
+            <AppLogo size={28} className="md:hidden" />
             <h1 className="font-serif text-base md:text-lg italic text-[var(--color-text)] truncate max-w-[150px] md:max-w-none">
                 {profile?.displayName && (
                   <>
@@ -233,9 +235,10 @@ export default function Layout() {
                 
                 <div className="flex-1 overflow-y-auto px-6 pb-24">
                   <div className="flex items-center gap-4 mb-8">
-                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg uppercase shadow-neon-glow transition-all ${user ? 'bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-clay)] text-white' : 'text-[var(--color-primary)] bg-[var(--color-primary)]/10'}`}>
-                       {user ? initials : <LogIn size={24} />}
-                     </div>
+                     <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="group relative">
+                        <div className="absolute inset-0 bg-[var(--color-primary)]/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-full"></div>
+                        <AppLogo size={60} className="relative z-10 transition-transform duration-500 group-hover:scale-110" />
+                     </Link>
                      <div>
                        <h3 className="font-serif font-bold text-xl text-[var(--color-text)]">{user ? (profile?.displayName || 'Royal Priest') : <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="text-[var(--color-primary)] hover:underline">Sign In</Link>}</h3>
                        <p className="text-xs text-[var(--color-text-muted)] uppercase tracking-widest font-black">{user ? 'Spiritual Citizen' : 'Guest Traveler'}</p>

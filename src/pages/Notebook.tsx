@@ -431,7 +431,7 @@ export default function Notebook() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar pb-mobile-nav md:pb-4">
           {filteredNotes.length === 0 ? (
             <div className="text-center py-20 text-[10px] uppercase tracking-widest font-black text-white/10 italic">
               Thy parchment is empty

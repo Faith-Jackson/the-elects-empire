@@ -36,7 +36,7 @@ export default function Forum() {
   if (loading) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin text-[var(--color-primary)]" /></div>;
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-12 mb-32">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-12 pb-mobile-nav">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-4">
            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">

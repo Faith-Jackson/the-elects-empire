@@ -1,12 +1,12 @@
 import React from 'react';
 
-interface AppLogoProps {
+interface LogoProps {
   className?: string;
   size?: number | string;
   color?: string;
 }
 
-export const AppLogo: React.FC<AppLogoProps> = ({ className = '', size = 40, color = 'currentColor' }) => {
+export const Logo: React.FC<LogoProps> = ({ className = '', size = 40, color = 'currentColor' }) => {
   return (
     <svg 
       width={size} 
@@ -19,7 +19,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({ className = '', size = 40, col
       <title>The Elects Empire Official Logo</title>
       
       {/* Background Sun/Moon with horizontal stripes */}
-      <mask id="sun-mask-app">
+      <mask id="sun-mask">
         <circle cx="360" cy="100" r="60" fill="white" />
         <path d="M300 50 H420 V55 H300 Z" fill="black" />
         <path d="M300 60 H420 V65 H300 Z" fill="black" />
@@ -32,7 +32,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({ className = '', size = 40, col
         <path d="M300 130 H420 V135 H300 Z" fill="black" />
         <path d="M300 140 H420 V145 H300 Z" fill="black" />
       </mask>
-      <circle cx="360" cy="100" r="60" fill={color} mask="url(#sun-mask-app)" />
+      <circle cx="360" cy="100" r="60" fill={color} mask="url(#sun-mask)" />
 
       {/* The Imperial Palace / Cathedral Silhouette */}
       <g fill={color}>
@@ -64,8 +64,11 @@ export const AppLogo: React.FC<AppLogoProps> = ({ className = '', size = 40, col
         <path d="M245 160 H267 V145 H245 Z" />
         
         {/* The Imperial Cross */}
+        {/* Vertical Post */}
         <rect x="252" y="50" width="8" height="100" />
+        {/* Main Horizontal Bar */}
         <rect x="220" y="75" width="72" height="8" />
+        {/* Top Horizontal Bar */}
         <rect x="245" y="58" width="22" height="4" />
         
         {/* The Shroud (Cloth) */}
@@ -77,4 +80,4 @@ export const AppLogo: React.FC<AppLogoProps> = ({ className = '', size = 40, col
   );
 };
 
-export default AppLogo;
+export default Logo;

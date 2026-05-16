@@ -8,6 +8,7 @@ import MannaJar from '../components/MannaJar';
 import AppLogo from '../components/AppLogo';
 import { HelpTooltip } from '../components/HelpTooltip';
 import SEO from '../components/SEO';
+import { Logo } from '../components/Logo';
 import DynamicFeatureWidget from '../components/DynamicFeatureWidget';
 import { SacredBanner } from '../components/BeautifulWidgets';
 
@@ -87,7 +88,7 @@ export default function Home() {
                className="w-20 h-20 bg-[var(--color-primary)]/10 rounded-3xl flex items-center justify-center text-[var(--color-primary)] shadow-neon-glow relative group/icon"
              >
                 <div className="absolute inset-0 bg-[var(--color-primary)]/20 blur-xl opacity-0 group-hover/icon:opacity-100 transition-opacity"></div>
-                {user ? <BookOpen size={36} className="relative z-10" /> : <LogIn size={36} className="relative z-10" />}
+                <AppLogo size={120} className="relative z-10" />
              </motion.div>
           </motion.div>
 
