@@ -353,7 +353,30 @@ export default function Profile() {
         </h2>
         
         <div className="space-y-8">
-           {/* Layouts section is already existing, let's keep it */}
+           <div>
+              <h3 className="text-xs tracking-wider uppercase text-[var(--color-primary)] font-bold mb-4">Floating Quick-Menu</h3>
+              <div className="glass-panel p-6 rounded-2xl border border-white/5 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+                    <Plus size={20} />
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg">Quick-Action Menu</div>
+                    <div className="text-xs text-[var(--color-text-muted)]">Show the draggable quick-access widget</div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => updateSetting('showFloatingMenu', !settings.showFloatingMenu)}
+                  className={`w-14 h-8 rounded-full transition-all relative ${settings.showFloatingMenu ? 'bg-[var(--color-primary)] shadow-neon' : 'bg-white/10'}`}
+                >
+                  <motion.div 
+                    animate={{ x: settings.showFloatingMenu ? 28 : 4 }}
+                    className="absolute top-1 w-6 h-6 rounded-full bg-white shadow-lg"
+                  />
+                </button>
+              </div>
+           </div>
+
            <div>
               <h3 className="text-xs tracking-wider uppercase text-[var(--color-primary)] font-bold mb-4">View Mode</h3>
               <div className="grid sm:grid-cols-2 gap-3 md:gap-4">

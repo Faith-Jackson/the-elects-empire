@@ -12,6 +12,7 @@ export interface UserSettings {
   lineSpacing: 'relaxed' | 'normal' | 'tight';
   textAlignment: 'left' | 'center' | 'justify';
   bgOpacity: number;
+  showFloatingMenu: boolean;
 }
 
 export interface UserProfile extends UserSettings {
@@ -50,7 +51,8 @@ const defaultSettings: UserSettings = {
   bibleTranslation: 'KJV',
   lineSpacing: 'relaxed',
   textAlignment: 'left',
-  bgOpacity: 40
+  bgOpacity: 40,
+  showFloatingMenu: true
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -120,7 +122,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           bibleTranslation: profileData.bibleTranslation ?? settings.bibleTranslation,
           lineSpacing: profileData.lineSpacing ?? settings.lineSpacing,
           textAlignment: profileData.textAlignment ?? settings.textAlignment,
-          bgOpacity: profileData.bgOpacity ?? settings.bgOpacity
+          bgOpacity: profileData.bgOpacity ?? settings.bgOpacity,
+          showFloatingMenu: profileData.showFloatingMenu ?? settings.showFloatingMenu
         };
         setSettings(updatedSettings);
         localStorage.setItem('userSettings', JSON.stringify(updatedSettings));
@@ -207,7 +210,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               bibleTranslation: data.bibleTranslation ?? settings.bibleTranslation,
               lineSpacing: data.lineSpacing ?? settings.lineSpacing,
               textAlignment: data.textAlignment ?? settings.textAlignment,
-              bgOpacity: data.bgOpacity ?? settings.bgOpacity
+              bgOpacity: data.bgOpacity ?? settings.bgOpacity,
+              showFloatingMenu: data.showFloatingMenu ?? settings.showFloatingMenu
             };
             setSettings(updatedSettings);
             localStorage.setItem('userSettings', JSON.stringify(updatedSettings));

@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useDragControls } from 'motion/react';
 import { 
   Plus, BookOpen, BrainCircuit, PenTool, Users, X, 
-  Settings, Mic, BookOpenText, HandHelping, MessageSquare, 
-  FileText, Sun, Star, Check, GripVertical
+  Check, Mic, BookOpenText, HandHelping, FileText, 
+  MessageSquare, Sun, Star
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
 interface ActionItem {
   id: string;
@@ -32,6 +33,7 @@ const ALL_ACTIONS: ActionItem[] = [
 const DEFAULT_FAVORITES = ['read', 'ai', 'notebook', 'groups'];
 
 export default function FloatingActionMenu() {
+  const { settings } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isManaging, setIsManaging] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -41,6 +43,8 @@ export default function FloatingActionMenu() {
   });
   
   const navigate = useNavigate();
+  const dragControls = useDragControls();
+  const constraintsRef = useRef(null);
 
   useEffect(() => {
     localStorage.setItem('empire_favorites', JSON.stringify(favorites));
@@ -67,116 +71,131 @@ export default function FloatingActionMenu() {
     });
   };
 
-  if (!isVisible) return null;
+  if (!isVisible || !settings.showFloatingMenu) return null;
 
   return (
-    <div className="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-[100] flex flex-col items-end">
-      {/* Selection Modal (when managing) */}
-      <AnimatePresence>
-        {isManaging && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="absolute bottom-full right-0 mb-6 w-72 max-h-[450px] overflow-hidden bg-black/95 backdrop-blur-2xl rounded-[2.5rem] border border-white/20 shadow-2xl flex flex-col p-6 z-[110]"
-          >
-            <div className="flex items-center justify-between mb-4 px-2">
-              <h3 className="text-white font-serif font-bold text-lg">My Favorites</h3>
-              <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">{favorites.length}/6</span>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
-              {ALL_ACTIONS.map(action => (
-                <button
-                  key={action.id}
-                  onClick={() => toggleFavorite(action.id)}
-                  className={`w-full flex items-center justify-between p-3 rounded-2xl transition-all ${favorites.includes(action.id) ? 'bg-white/10 border-white/10' : 'hover:bg-white/5 border-transparent'} border`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 ${action.color} rounded-lg flex items-center justify-center text-white`}>
-                      <action.icon size={16} />
-                    </div>
-                    <span className="text-xs font-bold text-white/80">{action.label}</span>
-                  </div>
-                  {favorites.includes(action.id) && <Check size={16} className="text-[var(--color-primary)]" />}
-                </button>
-              ))}
-            </div>
-            
-            <button 
-              onClick={() => {
-                setIsManaging(false);
-                setIsOpen(false);
-              }}
-              className="mt-4 w-full py-3 bg-white text-black rounded-xl font-black text-[10px] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all"
+    <div ref={constraintsRef} className="fixed inset-0 pointer-events-none z-[100]">
+      <motion.div 
+        drag
+        dragControls={dragControls}
+        dragListener={false}
+        dragMomentum={false}
+        dragConstraints={constraintsRef}
+        initial={{ top: '50%', right: '1.5rem', y: '-50%' }}
+        className="absolute pointer-events-auto flex flex-col items-end"
+      >
+        {/* Selection Modal (when managing) */}
+        <AnimatePresence>
+          {isManaging && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="absolute bottom-full right-0 mb-6 w-72 max-h-[450px] overflow-hidden bg-black/95 backdrop-blur-2xl rounded-[2.5rem] border border-white/20 shadow-2xl flex flex-col p-6 z-[110]"
             >
-              Done Saving
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Floating Actions List */}
-      <AnimatePresence>
-        {isOpen && !isManaging && (
-          <div className="absolute bottom-full right-0 mb-4 flex flex-col gap-3">
-             {/* Manage Favorites Button (The + icon requested) */}
-             <motion.button
-                initial={{ opacity: 0, scale: 0.5, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.5, y: 20 }}
-                onClick={() => setIsManaging(true)}
-                className="flex items-center gap-3 group"
-              >
-                <span className="bg-black/80 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  Add to Favorites
-                </span>
-                <div className="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all">
-                  <Plus size={18} strokeWidth={3} />
-                </div>
-              </motion.button>
-
-            {activeActions.map((action, idx) => (
-              <motion.button
-                key={action.id}
-                initial={{ opacity: 0, scale: 0.5, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.5, y: 20 }}
-                transition={{ delay: idx * 0.05 }}
+              <div className="flex items-center justify-between mb-4 px-2">
+                <h3 className="text-white font-serif font-bold text-lg">My Favorites</h3>
+                <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">{favorites.length}/6</span>
+              </div>
+              
+              <div className="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+                {ALL_ACTIONS.map(action => (
+                  <button
+                    key={action.id}
+                    onClick={() => toggleFavorite(action.id)}
+                    className={`w-full flex items-center justify-between p-3 rounded-2xl transition-all ${favorites.includes(action.id) ? 'bg-white/10 border-white/10' : 'hover:bg-white/5 border-transparent'} border`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`w-8 h-8 ${action.color} rounded-lg flex items-center justify-center text-white`}>
+                        <action.icon size={16} />
+                      </div>
+                      <span className="text-xs font-bold text-white/80">{action.label}</span>
+                    </div>
+                    {favorites.includes(action.id) && <Check size={16} className="text-[var(--color-primary)]" />}
+                  </button>
+                ))}
+              </div>
+              
+              <button 
                 onClick={() => {
-                  navigate(action.path);
+                  setIsManaging(false);
                   setIsOpen(false);
                 }}
-                className="flex items-center gap-3 group"
+                className="mt-4 w-full py-3 bg-white text-black rounded-xl font-black text-[10px] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all"
               >
-                <span className="bg-black/80 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  {action.label}
-                </span>
-                <div className={`w-10 h-10 ${action.color} rounded-xl flex items-center justify-center text-white shadow-lg shadow-black/20 hover:scale-110 active:scale-95 transition-all`}>
-                  <action.icon size={18} />
-                </div>
-              </motion.button>
-            ))}
-          </div>
-        )}
-      </AnimatePresence>
+                Done Saving
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      {/* Main Trigger Button */}
-      <button
-        onClick={() => {
-          if (isManaging) setIsManaging(false);
-          else setIsOpen(!isOpen);
-        }}
-        className={`relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-500 overflow-hidden group/main ${isOpen || isManaging ? 'bg-white text-black rotate-[225deg]' : 'bg-black text-white shadow-neon border border-white/20'}`}
-      >
-        {/* Glow effect */}
-        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover/main:opacity-100 transition-opacity" />
-        
-        {isOpen || isManaging ? <X size={22} strokeWidth={2.5} /> : <Plus size={22} strokeWidth={2.5} />}
-        
-        {/* Subtle border */}
-        <div className="absolute inset-0 border border-white/10 rounded-2xl pointer-events-none" />
-      </button>
+        {/* Floating Actions List */}
+        <AnimatePresence>
+          {isOpen && !isManaging && (
+            <div className="absolute bottom-full right-0 mb-4 flex flex-col gap-3">
+               {/* Manage Favorites Button */}
+               <motion.button
+                  initial={{ opacity: 0, scale: 0.5, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.5, y: 20 }}
+                  onClick={() => setIsManaging(true)}
+                  className="flex items-center gap-3 group"
+                >
+                  <span className="bg-black/80 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    Add to Favorites
+                  </span>
+                  <div className="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all">
+                    <Plus size={18} strokeWidth={3} />
+                  </div>
+                </motion.button>
+
+              {activeActions.map((action, idx) => (
+                <motion.button
+                  key={action.id}
+                  initial={{ opacity: 0, scale: 0.5, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.5, y: 20 }}
+                  transition={{ delay: idx * 0.05 }}
+                  onClick={() => {
+                    navigate(action.path);
+                    setIsOpen(false);
+                  }}
+                  className="flex items-center gap-3 group"
+                >
+                  <span className="bg-black/80 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    {action.label}
+                  </span>
+                  <div className={`w-10 h-10 ${action.color} rounded-xl flex items-center justify-center text-white shadow-lg shadow-black/20 hover:scale-110 active:scale-95 transition-all`}>
+                    <action.icon size={18} />
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* Main Trigger Button with Drag Handle */}
+        <div className="flex flex-col items-center gap-2">
+           <div 
+             onPointerDown={(e) => dragControls.start(e)}
+             className="w-8 h-2 rounded-full bg-white/10 cursor-grab active:cursor-grabbing hover:bg-white/20 transition-colors mb-1 flex items-center justify-center"
+           >
+              <div className="w-4 h-0.5 bg-white/20 rounded-full" />
+           </div>
+
+           <button
+            onClick={() => {
+              if (isManaging) setIsManaging(false);
+              else setIsOpen(!isOpen);
+            }}
+            className={`relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-500 overflow-hidden group/main ${isOpen || isManaging ? 'bg-white text-black rotate-[225deg]' : 'bg-black text-white shadow-neon border border-white/20'}`}
+          >
+            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover/main:opacity-100 transition-opacity" />
+            {isOpen || isManaging ? <X size={22} strokeWidth={2.5} /> : <Plus size={22} strokeWidth={2.5} />}
+            <div className="absolute inset-0 border border-white/10 rounded-2xl pointer-events-none" />
+          </button>
+        </div>
+      </motion.div>
     </div>
   );
 }

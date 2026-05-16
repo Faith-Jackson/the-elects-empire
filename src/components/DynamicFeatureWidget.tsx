@@ -76,7 +76,35 @@ const features: Feature[] = [
 export default function DynamicFeatureWidget() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [spotlightUsers, setSpotlightUsers] = useState<any[]>([]);
+  const [totalUsers, setTotalUsers] = useState('2k');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchSpotlightData = async () => {
+      // Fetch 5 active users with avatars
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, displayName, avatarUrl')
+        .not('avatarUrl', 'is', null)
+        .limit(5);
+      
+      if (profiles && profiles.length > 0) {
+        setSpotlightUsers(profiles);
+      }
+
+      // Fetch total count for social proof
+      const { count } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true });
+      
+      if (count) {
+        setTotalUsers(count > 1000 ? `${(count/1000).toFixed(1)}k` : count.toString());
+      }
+    };
+
+    fetchSpotlightData();
+  }, []);
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -169,15 +197,25 @@ export default function DynamicFeatureWidget() {
               </button>
               
               <div className="flex items-center -space-x-3">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="w-10 h-10 rounded-full border-2 border-black overflow-hidden shadow-xl">
-                    <img src={`https://i.pravatar.cc/100?u=${currentFeature.id}${i}`} alt="user" className="w-full h-full object-cover" />
-                  </div>
-                ))}
+                {spotlightUsers.length > 0 ? (
+                  spotlightUsers.map(u => (
+                    <div key={u.id} className="w-10 h-10 rounded-full border-2 border-black overflow-hidden shadow-xl bg-[var(--color-primary)] flex items-center justify-center">
+                      {u.avatarUrl ? (
+                        <img src={u.avatarUrl} alt={u.displayName} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-white text-[10px] font-bold">{u.displayName?.charAt(0) || 'E'}</span>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  [1, 2, 3, 4].map(i => (
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-black overflow-hidden shadow-xl bg-white/10" />
+                  ))
+                )}
                 <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/20 flex items-center justify-center text-[10px] text-white font-bold">
-                  +2k
+                  +{totalUsers}
                 </div>
-                <span className="ml-6 text-xs text-white/50 font-bold uppercase tracking-widest">using this week</span>
+                <span className="ml-6 text-xs text-white/50 font-bold uppercase tracking-widest">citizens online</span>
               </div>
             </motion.div>
           </div>

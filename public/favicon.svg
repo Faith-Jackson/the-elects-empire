@@ -1,8 +1,7 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" rx="128" fill="black"/>
+<svg width="512" height="512" viewBox="-40 -40 592 592" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="-40" y="-40" width="592" height="592" rx="128" fill="black"/>
   
-  {/* The Sun/Moon Halftone */}
-  <mask id="sun-mask">
+  <mask id="sun-mask-fav">
     <circle cx="360" cy="100" r="60" fill="white" />
     <path d="M300 50 H420 V55 H300 Z" fill="black" />
     <path d="M300 60 H420 V65 H300 Z" fill="black" />
@@ -15,7 +14,7 @@
     <path d="M300 130 H420 V135 H300 Z" fill="black" />
     <path d="M300 140 H420 V145 H300 Z" fill="black" />
   </mask>
-  <circle cx="360" cy="100" r="60" fill="white" mask="url(#sun-mask)" />
+  <circle cx="360" cy="100" r="60" fill="white" mask="url(#sun-mask-fav)" />
 
   <g fill="white">
     <path d="M60 480 C 150 430, 362 430, 452 480 L 452 500 L 60 500 Z" />
