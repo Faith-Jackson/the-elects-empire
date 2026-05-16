@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, BrainCircuit, Users, PenTool, Mic, Sparkles, ChevronRight, ChevronLeft, Star, Zap, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 
 interface Feature {
   id: string;
